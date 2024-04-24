@@ -4,24 +4,39 @@ const createBtn = document.querySelector("#createBtn");
 const numSquareInput = document.querySelector("#numSquareInput");
 const grid = document.querySelector(".grid");
 
-function createSquare(){
-    const square = document.createElement("div");
-        square.classList.add("square");
-        square.setAttribute("style", "background-color:red; height:20px; width:20px; margin:1px; border:solid black 1px;");
-        grid.appendChild(square);
-}
-
 function resetGrid(){
     grid.innerHTML = "";
 }
 
-function createGrid(input){
-    resetGrid();
-    for(let i = 0; i < input * input; i++){
-        createSquare();
+function createSquare(gridSize){
+    for(let i = 0; i < gridSize ** 2; i++){
+        let square = document.createElement("div");
+        square.classList.add("square");
+        let sideSize = 100/gridSize + "%"
+        square.setAttribute("style", "box-shadow: 0px 0px 0px 1px rgb(100, 100, 100) inset;")
+        square.style.width = sideSize
+        square.style.height = sideSize
+        // square.style.border = "0.1px solid black"
+        grid.appendChild(square);
     }
 }
 
+function generateGrid(){
+    resetGrid();
+    createSquare(numSquareInput.value);
+    squares = document.querySelectorAll(".square");
+    squares.forEach(square => {
+        square.addEventListener("mouseenter", highlight)
+    })
+}
+
+function highlight(e){
+    e.target.style.backgroundColor = "black";
+    // e.target.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+}
+
 createBtn.addEventListener("click", () => {
-    createGrid(numSquareInput.value);
+    generateGrid();
 });
+
+generateGrid();
